@@ -1,10 +1,11 @@
 import sys
 import numpy as np
+import h5py
 
 from swiftsimio import load as simload
 from velociraptor import load
-from velociraptor.swift.swift import to_swiftsimio_dataset
 from velociraptor.particles import load_groups
+from velociraptor.swift.swift import to_swiftsimio_dataset
 from swiftgalaxy import SWIFTGalaxy, Velociraptor
 from schwimmbad import MultiPool
 from unyt import c, h, nJy, erg, s, Hz, pc, angstrom, eV, Msun, yr
@@ -28,7 +29,7 @@ sim_data = simload(snap_path % snap)
 z = sim_data.metadata.redshift
 boxsize = sim_data.metadata.boxsize
 
-# Load halos
+# Load 
 proto_data = load(halo_path % proto_snap + ".properties.0")
 proto_groups = load_groups(
     halo_path % snap + ".catalog_groups.0",
@@ -41,8 +42,6 @@ groups = load_groups(
 )
 
 # Get the halo masses
-print(dir(halo_data))
-print(dir(halo_data.masses))
 proto_data.masses.mvir.convert_to_units("msun")
 proto_masses = proto_data.masses.mvir
 halo_data.masses.mvir.convert_to_units("msun")
@@ -56,8 +55,11 @@ sinds = np.argsort(masses)[::-1]
 i = 0
 while i < ntest:
 
+    print("Getting halo %d particles" % sinds[i])
+
     # Get this protocluster's particles
-    particles, unbound_particles = groups.extract_halo(halo_index=sinds[i])
+    particles, unbound_particles = proto_groups.extract_halo(
+        halo_index=sinds[i])
 
     # Get the mask into the SWIFT files
     data, mask = to_swiftsimio_dataset(
