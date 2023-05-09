@@ -2,12 +2,6 @@ import sys
 import numpy as np
 import h5py
 
-from swiftsimio import load as simload
-from velociraptor import load
-from velociraptor.particles import load_groups
-from velociraptor.swift.swift import to_swiftsimio_dataset
-from swiftgalaxy import SWIFTGalaxy, Velociraptor
-from schwimmbad import MultiPool
 from unyt import c, h, nJy, erg, s, Hz, pc, angstrom, eV, Msun, yr
 
 
@@ -22,57 +16,56 @@ snap = "0015"
 # How many halos should we test?
 ntest = int(sys.argv[1])
 
-# Load swiftsimio dataset to get volume and redshift
-proto_sim_data = simload(snap_path % proto_snap)
-proto_z = proto_sim_data.metadata.redshift
-sim_data = simload(snap_path % snap)
-z = sim_data.metadata.redshift
-boxsize = sim_data.metadata.boxsize
+# Open HDF5 files
+proto_hdf = h5py.File(snap_path % proto_snap, "r")
+hdf = h5py.File(snap_path % snap, "r")
+proto_hdf = h5py.File(snap_path % proto_snap, "r")
+hdf = h5py.File(snap_path % snap, "r")
 
-# Load 
-proto_data = load(halo_path % proto_snap + ".properties.0")
-proto_groups = load_groups(
-    halo_path % snap + ".catalog_groups.0",
-    catalogue=proto_data
-)
-halo_data = load(halo_path % proto_snap + ".properties.0")
-groups = load_groups(
-    halo_path % snap + ".catalog_groups.0",
-    catalogue=halo_data
-)
+# Get some metadata
+print(proto_hdf["Header"].attrs.keys())
+proto_z = proto_hdf["Header"].attrs["Redshift"]
+z = hdf["Header"].attrs["Redshift"]
+boxsize = hdf["Header"].attrs["Boxsize"]
 
-# Get the halo masses
-proto_data.masses.mvir.convert_to_units("msun")
-proto_masses = proto_data.masses.mvir
-halo_data.masses.mvir.convert_to_units("msun")
-masses = halo_data.masses.mvir
+# Load halo data
+proto_data = h5py.File(halo_path % proto_snap + ".properties.0", "r")
+halo_data = h5py.File(halo_path % snap + ".properties.0", "r")
 
-# Gets the indices of the most massive halos
-proto_sinds = np.argsort(proto_masses)[::-1]
-sinds = np.argsort(masses)[::-1]
+print(halo_data.keys())
 
-# Loop until we've tested all the halos we wanted to
-i = 0
-while i < ntest:
+# # Get the halo masses
+# proto_data.masses.mvir.convert_to_units("msun")
+# proto_masses = proto_data.masses.mvir
+# halo_data.masses.mvir.convert_to_units("msun")
+# masses = halo_data.masses.mvir
 
-    print("Getting halo %d particles" % sinds[i])
+# # Gets the indices of the most massive halos
+# proto_sinds = np.argsort(proto_masses)[::-1]
+# sinds = np.argsort(masses)[::-1]
 
-    # Get this protocluster's particles
-    particles, unbound_particles = proto_groups.extract_halo(
-        halo_index=sinds[i])
+# # Loop until we've tested all the halos we wanted to
+# i = 0
+# while i < ntest:
 
-    # Get the mask into the SWIFT files
-    data, mask = to_swiftsimio_dataset(
-        particles,
-        snap_path % proto_snap,
-        generate_extra_mask=True
-    )
+#     print("Getting halo %d particles" % sinds[i])
 
-    # Get particle IDs of the protocluser
-    print(dir(data))
-    print(dir(data.dark_matter))
+#     # Get this protocluster's particles
+#     particles, unbound_particles = proto_groups.extract_halo(
+#         halo_index=sinds[i])
+
+#     # Get the mask into the SWIFT files
+#     data, mask = to_swiftsimio_dataset(
+#         particles,
+#         snap_path % proto_snap,
+#         generate_extra_mask=True
+#     )
+
+#     # Get particle IDs of the protocluser
+#     print(dir(data))
+#     print(dir(data.dark_matter))
     
 
 
-    i += 1
+#     i += 1
 
