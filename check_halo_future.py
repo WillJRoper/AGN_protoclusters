@@ -29,14 +29,14 @@ z = sim_data.metadata.redshift
 boxsize = sim_data.metadata.boxsize
 
 # Load halos
-proto_data = load(halo_path % proto_snap + ".properties")
+proto_data = load(halo_path % proto_snap + ".properties.0")
 proto_groups = load_groups(
-    halo_path % snap + ".catalog_groups",
+    halo_path % snap + ".catalog_groups.0",
     catalogue=proto_data
 )
-halo_data = load(halo_path % proto_snap + ".properties")
+halo_data = load(halo_path % proto_snap + ".properties.0")
 groups = load_groups(
-    halo_path % snap + ".catalog_groups",
+    halo_path % snap + ".catalog_groups.0",
     catalogue=halo_data
 )
 
