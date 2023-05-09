@@ -23,7 +23,7 @@ ntest = int(sys.argv[1])
 
 # Load swiftsimio dataset to get volume and redshift
 proto_sim_data = simload(snap_path % proto_snap)
-proto_z = sim_data.metadata.redshift
+proto_z = proto_sim_data.metadata.redshift
 sim_data = simload(snap_path % snap)
 z = sim_data.metadata.redshift
 boxsize = sim_data.metadata.boxsize
