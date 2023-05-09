@@ -43,10 +43,10 @@ groups = load_groups(
 # Get the halo masses
 print(dir(halo_data))
 print(dir(halo_data.masses))
-proto_data.masses.mass_dark_matter.convert_to_units("msun")
-proto_masses = proto_data.masses.mass_dark_matter
-halo_data.masses.mass_dark_matter.convert_to_units("msun")
-masses = halo_data.masses.mass_dark_matter
+proto_data.masses.mvir.convert_to_units("msun")
+proto_masses = proto_data.masses.mvir
+halo_data.masses.mvir.convert_to_units("msun")
+masses = halo_data.masses.mvir
 
 # Gets the indices of the most massive halos
 proto_sinds = np.argsort(proto_masses)[::-1]
