@@ -31,18 +31,25 @@ boxsize = hdf["Header"].attrs["BoxSize"]
 # Load halo data
 proto_data = h5py.File(halo_path % proto_snap + ".properties.0", "r")
 halo_data = h5py.File(halo_path % snap + ".properties.0", "r")
+proto_groups = h5py.File(halo_path % proto_snap + ".catalog_groups.0", "r")
+halo_groups = h5py.File(halo_path % snap + ".catalog_groups.0", "r")
+proto_parts = h5py.File(halo_path % proto_snap + ".catalog_particles.0", "r")
+halo_parts = h5py.File(halo_path % snap + ".catalog_particles.0", "r")
+
 
 print(halo_data.keys())
+print(halo_groups.keys())
+print(halo_parts.keys())
 
-# # Get the halo masses
-# proto_data.masses.mvir.convert_to_units("msun")
-# proto_masses = proto_data.masses.mvir
-# halo_data.masses.mvir.convert_to_units("msun")
-# masses = halo_data.masses.mvir
+# Get the halo masses
+proto_masses = proto_data["Mvir"]
+masses = halo_data["Mvir"]
 
-# # Gets the indices of the most massive halos
-# proto_sinds = np.argsort(proto_masses)[::-1]
-# sinds = np.argsort(masses)[::-1]
+# Gets the indices of the most massive halos
+proto_sinds = np.argsort(proto_masses)[::-1]
+sinds = np.argsort(masses)[::-1]
+
+print("Getting halo %d particles" % sinds[i])
 
 # # Loop until we've tested all the halos we wanted to
 # i = 0
