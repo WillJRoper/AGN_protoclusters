@@ -26,7 +26,7 @@ hdf = h5py.File(snap_path % snap, "r")
 print(proto_hdf["Header"].attrs.keys())
 proto_z = proto_hdf["Header"].attrs["Redshift"]
 z = hdf["Header"].attrs["Redshift"]
-boxsize = hdf["Header"].attrs["Boxsize"]
+boxsize = hdf["Header"].attrs["BoxSize"]
 
 # Load halo data
 proto_data = h5py.File(halo_path % proto_snap + ".properties.0", "r")
