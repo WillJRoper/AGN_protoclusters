@@ -53,7 +53,7 @@ for i in range(0, 764):
 
     print(f"Snapshot {i}: Redshift {redshift}")
 
-    if masses.shape[0] == 0:
+    if masses.shape[0] > 1:
         continue
 
     # Find the most massive black hole
