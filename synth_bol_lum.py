@@ -62,8 +62,6 @@ for i in range(0, 764):
     if len(massive_bh) == 0:
         continue
 
-    print(f"Most massive black hole: {bh.masses[massive_bh]} Msun")
-
     # And get the black holes object
     bh = BlackHoles(
         masses=masses,
@@ -71,6 +69,8 @@ for i in range(0, 764):
         accretion_rates=accretion_rates,
         metallicities=metallicities,
     )
+
+    print(f"Most massive black hole: {bh.masses[massive_bh]} Msun")
 
     bh.calculate_random_inclination()
 
