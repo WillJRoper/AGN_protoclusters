@@ -32,6 +32,7 @@ grid_dir = "."
 hdf = h5py.File(f"{input_dir}/eagle_0763.hdf5", "r")
 masses = hdf["PartType5"]["SubgridMasses"][:]
 part_id = hdf["PartType5"]["ParticleIDs"][np.argmax(masses)]
+print(hdf["PartType5"]["MetalMasses"].attrs["Description"])
 hdf.close()
 
 # Define lists for plotting
@@ -49,6 +50,7 @@ for i in range(0, 764):
     masses = hdf["PartType5"]["SubgridMasses"][:] * 10**10 * Msun
     coordinates = hdf["PartType5"]["Coordinates"][:]
     accretion_rates = hdf["PartType5"]["AccretionRates"][:]
+    eddington = hdf["PartType5"]["EddingtonFractions"][:]
     metallicities = hdf["PartType5"]["BirthMetallicities"][:]
     part_ids = hdf["PartType5"]["ParticleIDs"][:]
     hdf.close()
@@ -99,7 +101,7 @@ for i in range(0, 764):
     # Append to the lists
     luminosities.append(bol_lum[massive_bh])
     redshifts.append(redshift)
-    acc_rates.append(bh.accretion_rates[massive_bh])
+    acc_rates.append(eddington[massive_bh])
 
 
 fig, ax = plt.subplots()
@@ -113,6 +115,6 @@ ax2.plot(redshifts, acc_rates, "r-", label="Accretion Rate")
 
 ax.set_xlabel("$z$")
 ax.set_ylabel(r"$L_\mathrm{bol}$ / [erg / s]")
-ax2.set_ylabel(r"$\dot{M}$ / [M$_\odot$ / yr]")
+ax2.set_ylabel(r"$\dot{M}_{edd}$")
 
 fig.savefig("bol_lum_time_series.png", dpi=100, bbox_inches="tight")
