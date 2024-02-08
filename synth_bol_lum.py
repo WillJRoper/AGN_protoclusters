@@ -108,4 +108,4 @@ ax.set_xlabel("$z$")
 ax.set_ylabel(r"$L_\mathrm{bol}$ / [erg / s]")
 ax2.set_ylabel(r"$\dot{M}$ / [M$_\odot$ / yr]")
 
-plt.show()
+fig.savefig("bol_lum_time_series.png", dpi=100, bbox_inches="tight")
