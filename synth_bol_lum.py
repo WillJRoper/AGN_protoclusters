@@ -25,7 +25,7 @@ parser.add_argument(
 args = parser.parse_args()
 input_dir = args.input_dir
 
-grid_dir = ""
+grid_dir = "."
 
 
 # Get the particle ID of the most massive black hole at the last snapshot
