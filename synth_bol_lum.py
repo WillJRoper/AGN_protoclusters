@@ -2,7 +2,7 @@ import argparse
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
-from unyt import Msun, yr, Angstrom
+from unyt import Msun, yr, Angstrom, g, s
 
 from synthesizer.blackhole_emission_models import UnifiedAGN
 from synthesizer.particle import BlackHoles
@@ -46,7 +46,9 @@ for i in range(0, 764):
     redshift = hdf["Header"].attrs["Redshift"]
     masses = hdf["PartType5"]["SubgridMasses"][:] * 10**10 * Msun
     coordinates = hdf["PartType5"]["Coordinates"][:]
-    accretion_rates = hdf["PartType5"]["AccretionRates"][:]
+    accretion_rates = (
+        hdf["PartType5"]["AccretionRates"][:] * 6.444 * 10**23 * g / s
+    ).to(Msun / yr)
     metallicities = hdf["PartType5"]["BirthMetallicities"][:]
     part_ids = hdf["PartType5"]["ParticleIDs"][:]
     hdf.close()
