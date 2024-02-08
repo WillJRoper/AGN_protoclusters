@@ -80,7 +80,7 @@ for i in range(0, 764):
         metallicities=metallicities,
     )
 
-    print(f"Most massive black hole: {bh.masses[massive_bh]} Msun")
+    print(f"Most massive black hole: {bh.masses[massive_bh]}")
 
     bh.calculate_random_inclination()
 
@@ -111,10 +111,12 @@ ax2.semilogy()
 ax.grid(True)
 
 ax.plot(redshifts, luminosities, "k-", label="Bolometric Luminosity")
-ax2.plot(redshifts, acc_rates, "r-", label="Accretion Rate")
+ax2.plot(redshifts, acc_rates, "r:", label="Accretion Rate")
 
 ax.set_xlabel("$z$")
 ax.set_ylabel(r"$L_\mathrm{bol}$ / [erg / s]")
 ax2.set_ylabel(r"$\dot{M}_{edd}$")
+
+ax.legend()
 
 fig.savefig("bol_lum_time_series.png", dpi=100, bbox_inches="tight")
