@@ -59,7 +59,9 @@ for i in range(0, 764):
         continue
 
     # Apply accreation units
-    accretion_rates = accretion_rates * 6.444 * 10**23 * g / s
+    accretion_rates = accretion_rates * 6.444 * 10**23
+    print(accretion_rates)
+    accretion_rate = accretion_rates * g / s
     accretion_rates.to(Msun / yr)
 
     # Find the most massive black hole
