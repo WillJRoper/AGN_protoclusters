@@ -51,6 +51,8 @@ for i in range(0, 764):
     part_ids = hdf["PartType5"]["ParticleIDs"][:]
     hdf.close()
 
+    print(accretion_rates.shape)
+
     print(f"Snapshot {i}: Redshift {redshift}")
 
     if masses.shape[0] < 2:
