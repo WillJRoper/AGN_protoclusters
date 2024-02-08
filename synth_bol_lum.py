@@ -58,11 +58,12 @@ for i in range(0, 764):
     if masses.shape[0] < 2:
         continue
 
+    # Define the accretion rate conversion
+    conv = (6.444 * 10**23 * g / s).to(Msun / yr)
+    print(conv)
+
     # Apply accreation units
-    accretion_rates = accretion_rates * 6.444 * 10**23
-    print(accretion_rates)
-    accretion_rate = accretion_rates * g / s
-    accretion_rates.to(Msun / yr)
+    accretion_rates = accretion_rates * conv
 
     # Find the most massive black hole
     massive_bh = np.where(part_ids == part_id)[0]
