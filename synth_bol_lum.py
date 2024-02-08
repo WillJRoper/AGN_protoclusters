@@ -46,9 +46,7 @@ for i in range(0, 764):
     redshift = hdf["Header"].attrs["Redshift"]
     masses = hdf["PartType5"]["SubgridMasses"][:] * 10**10 * Msun
     coordinates = hdf["PartType5"]["Coordinates"][:]
-    accretion_rates = (
-        hdf["PartType5"]["AccretionRates"][:] * 6.444 * 10**23 * g / s
-    ).to(Msun / yr)
+    accretion_rates = hdf["PartType5"]["AccretionRates"][:]
     metallicities = hdf["PartType5"]["BirthMetallicities"][:]
     part_ids = hdf["PartType5"]["ParticleIDs"][:]
     hdf.close()
@@ -57,6 +55,11 @@ for i in range(0, 764):
 
     if masses.shape[0] > 1:
         continue
+
+    # Apply accreation units
+    accretion_rates = (accretion_rates * 6.444 * 10**23 * g / s).to(
+        Msun / yr
+    )
 
     # Find the most massive black hole
     massive_bh = np.where(part_ids == part_id)[0]
