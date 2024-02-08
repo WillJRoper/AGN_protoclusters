@@ -1,3 +1,4 @@
+import argparse
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,9 +9,25 @@ from synthesizer.particle import BlackHoles
 from synthesizer.particle import Gas
 from synthesizer import galaxy
 
+# Define the command line arguments
+parser = argparse.ArgumentParser(
+    description="Calculate the bolometric luminosity of the most "
+    "massive black hole in the EAGLE simulation."
+)
+parser.add_argument(
+    "--input-dir",
+    type=str,
+    help="The directory containing the EAGLE HDF5 files.",
+    default="",
+)
+
+# Parse the args
+args = parser.parse_args()
+input_dir = args.input_dir
+
 
 # Get the particle ID of the most massive black hole at the last snapshot
-hdf = h5py.File(f"eagle_{tag}.hdf5", "r")
+hdf = h5py.File(f"{input_dir}/eagle_0763.hdf5", "r")
 masses = hdf["PartType5"]["SubgridMasses"][:]
 part_id = hdf["PartType5"]["ParticleIDs"][np.argmax(masses)]
 hdf.close()
@@ -25,7 +42,7 @@ for i in range(0, 764):
     tag = str(i).zfill(4)
 
     # Read the snapshot data
-    hdf = h5py.File(f"eagle_{tag}.hdf5", "r")
+    hdf = h5py.File(f"{input_dir}/eagle_{tag}.hdf5", "r")
     redshift = hdf["Header"].attrs["Redshift"]
     masses = hdf["PartType5"]["SubgridMasses"][:] * 10**10 * Msun
     coordinates = hdf["PartType5"]["Coordinates"][:]
