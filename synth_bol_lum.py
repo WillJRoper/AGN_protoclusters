@@ -53,8 +53,6 @@ for i in range(0, 764):
     part_ids = hdf["PartType5"]["ParticleIDs"][:]
     hdf.close()
 
-    print(accretion_rates.shape)
-
     print(f"Snapshot {i}: Redshift {redshift}")
 
     if masses.shape[0] < 2:
@@ -101,11 +99,13 @@ for i in range(0, 764):
     # Append to the lists
     luminosities.append(bol_lum[massive_bh])
     redshifts.append(redshift)
-    acc_rates.append(accretion_rates[massive_bh])
+    acc_rates.append(bh.accretion_rates[massive_bh])
 
 
 fig, ax = plt.subplots()
+ax.semilogy()
 ax2 = ax.twinx()
+ax2.semilogy()
 ax.grid(True)
 
 ax.plot(redshifts, luminosities, "k-", label="Bolometric Luminosity")
