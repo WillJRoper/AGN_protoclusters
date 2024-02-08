@@ -82,12 +82,13 @@ for i in range(0, 764):
 
 fig, ax = plt.subplots()
 ax2 = ax.twinx()
+ax.grid(True)
 
-ax.plot(redshifts, luminosities, "k-")
-ax2.plot(redshifts, acc_rates, "r-")
+ax.plot(redshifts, luminosities, "k-", label="Bolometric Luminosity")
+ax2.plot(redshifts, acc_rates, "r-", label="Accretion Rate")
 
 ax.set_xlabel("$z$")
-ax.set_ylabel("$L_\mathrm{bol}$ / [erg / s]")
-ax2.set_ylabel("$\dot{M}$ / [M$_\odot$ / yr]")
+ax.set_ylabel(r"$L_\mathrm{bol}$ / [erg / s]")
+ax2.set_ylabel(r"$\dot{M}$ / [M$_\odot$ / yr]")
 
 plt.show()
