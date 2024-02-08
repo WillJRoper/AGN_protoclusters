@@ -25,6 +25,8 @@ parser.add_argument(
 args = parser.parse_args()
 input_dir = args.input_dir
 
+grid_dir = ""
+
 
 # Get the particle ID of the most massive black hole at the last snapshot
 hdf = h5py.File(f"{input_dir}/eagle_0763.hdf5", "r")
@@ -60,7 +62,6 @@ for i in range(0, 764):
 
     # Define the accretion rate conversion
     conv = (6.444 * 10**23 * g / s).to(Msun / yr)
-    print(conv)
 
     # Apply accreation units
     accretion_rates = accretion_rates * conv
@@ -84,9 +85,6 @@ for i in range(0, 764):
     bh.calculate_random_inclination()
 
     # Define the emission model
-    grid_dir = (
-        "/Users/willroper/Research/Synthesizer/synthesizer/tests/test_grid/"
-    )
     emission_model = UnifiedAGN(
         disc_model="test_grid_agn", photoionisation_model="", grid_dir=grid_dir
     )
